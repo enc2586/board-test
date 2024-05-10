@@ -1,27 +1,49 @@
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { sql } from "@vercel/postgres";
+import { getServerSession } from "next-auth";
+import { Tooltip } from "antd";
 import Link from "next/link";
 
-export function NavBar() {
+export async function NavBar() {
+  const [session, { rows: boards }] = await Promise.all([
+    getServerSession(authOptions),
+    sql`SELECT id, name FROM boards;`,
+  ]);
+
   return (
     <header className="bg-gray-800">
       <nav className="container mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
           <div className="text-white font-bold text-xl">
-            <Link href="/">게시판</Link>
+            <Link href="/">BOARD-TEST</Link>
           </div>
           <div className="flex items-center space-x-6">
             <div className="hidden md:flex space-x-6">
-              <Link href="/b/notice" className="text-gray-300 hover:text-white">
-                학사공지
-              </Link>
-              <Link href="/b/club" className="text-gray-300 hover:text-white">
-                동아리소식
-              </Link>
+              {boards.map(({ id, name }) => (
+                <Link
+                  key={id}
+                  href={`/b/${id}`}
+                  className="text-gray-300 hover:text-white"
+                >
+                  {name}
+                </Link>
+              ))}
             </div>
-            <Link href="/u/login">
-              <button className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">
-                Login
-              </button>
-            </Link>
+            {session ? (
+              <Tooltip title={session.user?.email} placement="bottomRight">
+                <Link href="/api/auth/signout">
+                  <button className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">
+                    Logout
+                  </button>
+                </Link>
+              </Tooltip>
+            ) : (
+              <Link href="/api/auth/signin">
+                <button className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">
+                  Login
+                </button>
+              </Link>
+            )}
           </div>
           <div className="md:hidden">
             <button className="text-gray-300 hover:text-white focus:outline-none">
