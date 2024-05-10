@@ -1,4 +1,4 @@
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from "@/utils/authOptions";
 import { sql } from "@vercel/postgres";
 import dayjs from "@/utils/dayjs";
 import { getServerSession } from "next-auth";

@@ -4,7 +4,7 @@ import { handleDelete, handleEdit } from "../../actions";
 import { sql } from "@vercel/postgres";
 import { DeleteButton } from "@/components/ActionButtons";
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from "@/utils/authOptions";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 

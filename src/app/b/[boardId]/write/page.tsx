@@ -3,7 +3,7 @@ import { ExitButton } from "../../../../components/ExitButton";
 import { handleWrite } from "../actions";
 import { sql } from "@vercel/postgres";
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from "@/utils/authOptions";
 import { redirect } from "next/navigation";
 
 export default async function WritePage({
