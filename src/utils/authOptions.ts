@@ -21,10 +21,14 @@ export const authOptions: AuthOptions = {
       type: "oauth",
       clientId: process.env.GSA_CLIENT_ID,
       clientSecret: process.env.GSA_CLIENT_SECRET,
-      wellKnown: "https://api.idp.gistory.me/.well-known/openid-configuration",
+      wellKnown:
+        "https://api.stg.idp.gistory.me/.well-known/openid-configuration",
       authorization: { params: { scope: "openid" } },
       idToken: true,
       checks: ["state"],
+      client: {
+        id_token_signed_response_alg: "ES256",
+      },
       profile(profile) {
         return {
           id: profile.sub,
